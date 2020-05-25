@@ -70,11 +70,25 @@ public class MsweeperState implements Cloneable {
         }
     }
 
+    public boolean isExistingSquare(int x, int y){
+        if(x>=0 && y>=0 && x<rownumber && y < colnumber){
+            return true;
+        }
+        return false;
+    }
+
+    private void putFlag(int x,int y){
+        if(isExistingSquare(x,y)){
+            flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
+        }
+        else throw new IllegalArgumentException();
+    }
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i<rownumber; ++i) {
             for (int j = 0; j<colnumber; ++j) {
-                sb.append(minegrid[i][j]).append(',').append(aroundgrid[i][j]).append(' ');
+                sb.append(minegrid[i][j]).append(',').append(aroundgrid[i][j]).append(',').append(flaggrid[i][j]).append(' ');
             }
             sb.append('\n');
         }
@@ -83,6 +97,8 @@ public class MsweeperState implements Cloneable {
 
     public static void main(String[] args) {
         MsweeperState state = new MsweeperState();
+        System.out.println(state);
+        state.putFlag(0,0);
         System.out.println(state);
     }
 }
