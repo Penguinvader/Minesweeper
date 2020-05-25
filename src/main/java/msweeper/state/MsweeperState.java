@@ -49,6 +49,25 @@ public class MsweeperState implements Cloneable {
             }
             minegrid[x][y] = 1;
         }
+        for(int i = 0; i<rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
+                if (minegrid[i][j] == 1) {
+                    if (i > 0) {
+                        if (j > 0) aroundgrid[i - 1][j - 1]++;
+                        aroundgrid[i - 1][j]++;
+                        if (j < colnumber - 1) aroundgrid[i - 1][j + 1]++;
+                    }
+                    if (i < rownumber - 1) {
+                        if (j > 0) aroundgrid[i + 1][j - 1]++;
+                        aroundgrid[i + 1][j]++;
+                        if (j < colnumber - 1) aroundgrid[i + 1][j + 1]++;
+                    }
+                    if (j > 0) aroundgrid[i][j - 1]++;
+                    if (j < colnumber - 1) aroundgrid[i][j + 1]++;
+
+                }
+            }
+        }
     }
 
     public String toString(){
