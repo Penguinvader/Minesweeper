@@ -17,9 +17,9 @@ public class MsweeperState implements Cloneable {
     private int[][] revealgrid;
     private int[][] aroundgrid;
 
-    public int rownumber = 10;
-    public int colnumber = 20;
-    public int minenumber = 30;
+    private int rownumber = 10;
+    private int colnumber = 20;
+    private int minenumber = 30;
 
     public MsweeperState() {
         initGrid();
@@ -27,18 +27,34 @@ public class MsweeperState implements Cloneable {
         calculateMinesAround();
     }
 
+    public MsweeperState(int[][] incomingminegrid){
+        if(!isValidMinefield(incomingminegrid)) throw new IllegalArgumentException();
+        rownumber = incomingminegrid.length;
+        colnumber = incomingminegrid[0].length;
+        initGrid();
+        for (int i = 0; i<rownumber; ++i){
+            for(int j = 0; j<colnumber; ++j){
+                minegrid[i][j] = incomingminegrid[i][j];
+                flaggrid[i][j] = 0;
+                revealgrid[i][j] = 0;
+                aroundgrid[i][j] = 0;
+            }
+        }
+        calculateMinesAround();
+    }
+
     private void initGrid() {
-        this.minegrid = new int[rownumber][colnumber];
-        this.flaggrid = new int[rownumber][colnumber];
-        this.revealgrid = new int[rownumber][colnumber];
-        this.aroundgrid = new int[rownumber][colnumber];
+        minegrid = new int[rownumber][colnumber];
+        flaggrid = new int[rownumber][colnumber];
+        revealgrid = new int[rownumber][colnumber];
+        aroundgrid = new int[rownumber][colnumber];
 
         for(int i = 0; i<rownumber; ++i){
             for(int j = 0; j<colnumber; ++j){
-                this.minegrid[i][j] = 0;
-                this.flaggrid[i][j] = 0;
-                this.revealgrid[i][j] = 0;
-                this.aroundgrid[i][j] = 0;
+                minegrid[i][j] = 0;
+                flaggrid[i][j] = 0;
+                revealgrid[i][j] = 0;
+                aroundgrid[i][j] = 0;
             }
         }
     }
@@ -174,11 +190,12 @@ public class MsweeperState implements Cloneable {
     }
 
     public static void main(String[] args) {
-        MsweeperState state = new MsweeperState();
+        int[][] examplefield = {{0,0,1},{1,0,0},{0,0,0}};
+        MsweeperState state = new MsweeperState(examplefield);
         System.out.println(state.displayToConsole());
-        state.putFlag(5,10);
+        state.putFlag(1,1);
         System.out.println(state.displayToConsole());
-        state.reveal(5,11);
+        state.reveal(2,0);
         System.out.println(state.displayToConsole());
         System.out.println(state);
 
