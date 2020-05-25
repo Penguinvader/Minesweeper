@@ -17,12 +17,14 @@ public class MsweeperState implements Cloneable {
     private int[][] revealgrid;
     private int[][] aroundgrid;
 
-    public static final int rownumber = 10;
-    public static final int colnumber = 20;
-    public static final int minenumber = 30;
+    public int rownumber = 10;
+    public int colnumber = 20;
+    public int minenumber = 30;
 
     public MsweeperState() {
         initGrid();
+        placeMines(minenumber);
+        calculateMinesAround();
     }
 
     private void initGrid() {
@@ -39,8 +41,10 @@ public class MsweeperState implements Cloneable {
                 this.aroundgrid[i][j] = 0;
             }
         }
+    }
 
-        for(int i = 0; i<minenumber; ++i){
+    private void placeMines(int numberofminestoplace){
+        for(int i = 0; i<numberofminestoplace; ++i){
             int x = random.nextInt(rownumber);
             int y = random.nextInt(colnumber);
             while(minegrid[x][y] == 1){
@@ -49,6 +53,9 @@ public class MsweeperState implements Cloneable {
             }
             minegrid[x][y] = 1;
         }
+    }
+
+    private void calculateMinesAround(){
         for(int i = 0; i<rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
                 if (minegrid[i][j] == 1) {
