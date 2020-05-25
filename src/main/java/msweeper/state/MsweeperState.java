@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.Random;
 
 @Data
@@ -27,13 +28,13 @@ public class MsweeperState implements Cloneable {
         calculateMinesAround();
     }
 
-    public MsweeperState(int[][] incomingminegrid){
-        if(!isValidMinefield(incomingminegrid)) throw new IllegalArgumentException();
+    public MsweeperState(int[][] incomingminegrid) {
+        if (!isValidMinefield(incomingminegrid)) throw new IllegalArgumentException();
         rownumber = incomingminegrid.length;
         colnumber = incomingminegrid[0].length;
         initGrid();
-        for (int i = 0; i<rownumber; ++i){
-            for(int j = 0; j<colnumber; ++j){
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
                 minegrid[i][j] = incomingminegrid[i][j];
                 flaggrid[i][j] = 0;
                 revealgrid[i][j] = 0;
@@ -49,8 +50,8 @@ public class MsweeperState implements Cloneable {
         revealgrid = new int[rownumber][colnumber];
         aroundgrid = new int[rownumber][colnumber];
 
-        for(int i = 0; i<rownumber; ++i){
-            for(int j = 0; j<colnumber; ++j){
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
                 minegrid[i][j] = 0;
                 flaggrid[i][j] = 0;
                 revealgrid[i][j] = 0;
@@ -59,11 +60,11 @@ public class MsweeperState implements Cloneable {
         }
     }
 
-    private void placeMines(int numberofminestoplace){
-        for(int i = 0; i<numberofminestoplace; ++i){
+    private void placeMines(int numberofminestoplace) {
+        for (int i = 0; i < numberofminestoplace; ++i) {
             int x = random.nextInt(rownumber);
             int y = random.nextInt(colnumber);
-            while(minegrid[x][y] == 1){
+            while (minegrid[x][y] == 1) {
                 x = random.nextInt(rownumber);
                 y = random.nextInt(colnumber);
             }
@@ -71,8 +72,8 @@ public class MsweeperState implements Cloneable {
         }
     }
 
-    private void calculateMinesAround(){
-        for(int i = 0; i<rownumber; ++i) {
+    private void calculateMinesAround() {
+        for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
                 if (minegrid[i][j] == 1) {
                     if (i > 0) {
@@ -93,71 +94,71 @@ public class MsweeperState implements Cloneable {
         }
     }
 
-    public boolean isExistingSquare(int x, int y){
-        if(x>=0 && y>=0 && x<rownumber && y < colnumber){
+    public boolean isExistingSquare(int x, int y) {
+        if (x >= 0 && y >= 0 && x < rownumber && y < colnumber) {
             return true;
         }
         return false;
     }
 
-    public boolean isValidMinefield(int[][] minefield){
-        for (int[] row : minefield){
-            for (int field : row){
-                if(field != 1 && field != 0) return false;
+    public boolean isValidMinefield(int[][] minefield) {
+        int firstrowlength = minefield[0].length;
+        for (int[] row : minefield) {
+            if (row.length != firstrowlength) return false;
+            for (int field : row) {
+                if (field != 1 && field != 0) return false;
             }
         }
         return true;
     }
 
 
-
-    public void putFlag(int x,int y){
-        if(isExistingSquare(x,y)){
-            if(revealgrid[x][y]==0) flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
-        }
-        else throw new IllegalArgumentException();
+    public void putFlag(int x, int y) {
+        if (isExistingSquare(x, y)) {
+            if (revealgrid[x][y] == 0) flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
+        } else throw new IllegalArgumentException();
     }
 
-    public void reveal(int x, int y){
-        if(isExistingSquare(x,y)) {
+    public void reveal(int x, int y) {
+        if (isExistingSquare(x, y)) {
             if (revealgrid[x][y] == 0 && flaggrid[x][y] == 0) {
                 revealgrid[x][y] = 1;
                 if (aroundgrid[x][y] == 0) {
-                    reveal(x-1,y-1);
-                    reveal(x-1,y);
-                    reveal(x-1, y+1);
-                    reveal(x,y-1);
-                    reveal(x,y+1);
-                    reveal(x+1,y-1);
-                    reveal(x+1,y);
-                    reveal(x+1,y+1);
+                    reveal(x - 1, y - 1);
+                    reveal(x - 1, y);
+                    reveal(x - 1, y + 1);
+                    reveal(x, y - 1);
+                    reveal(x, y + 1);
+                    reveal(x + 1, y - 1);
+                    reveal(x + 1, y);
+                    reveal(x + 1, y + 1);
                 }
             }
         }
     }
 
-    public boolean isLost(){
-        for(int i = 0; i<rownumber; ++i){
-            for(int j = 0; j<colnumber; ++j){
-                if(minegrid[i][j]==1 && revealgrid[i][j]==1) return true;
+    public boolean isLost() {
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
+                if (minegrid[i][j] == 1 && revealgrid[i][j] == 1) return true;
             }
         }
         return false;
     }
 
-    public boolean isWon(){
-        for(int i = 0; i<rownumber; ++i){
-            for(int j = 0; j<colnumber; ++j){
-                if(minegrid[i][j]==0 && revealgrid[i][j]==0) return false;
+    public boolean isWon() {
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
+                if (minegrid[i][j] == 0 && revealgrid[i][j] == 0) return false;
             }
         }
         return true;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i<rownumber; ++i) {
-            for (int j = 0; j<colnumber; ++j) {
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
                 sb.append(minegrid[i][j]).append(',').append(aroundgrid[i][j]).append(',').append(flaggrid[i][j])
                         .append(',').append(revealgrid[i][j]).append(' ');
             }
@@ -167,20 +168,17 @@ public class MsweeperState implements Cloneable {
         return sb.toString();
     }
 
-    public String displayToConsole(){
+    public String displayToConsole() {
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i<rownumber; ++i){
-            for (int j = 0; j<colnumber; ++j){
-                if(flaggrid[i][j]==1){
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
+                if (flaggrid[i][j] == 1) {
                     sb.append("' ");
-                }
-                else if(revealgrid[i][j]==0){
+                } else if (revealgrid[i][j] == 0) {
                     sb.append("□ ");
-                }
-                else if(minegrid[i][j]==1){
+                } else if (minegrid[i][j] == 1) {
                     sb.append("* ");
-                }
-                else{
+                } else {
                     sb.append(aroundgrid[i][j]).append(' ');
                 }
             }
@@ -190,12 +188,12 @@ public class MsweeperState implements Cloneable {
     }
 
     public static void main(String[] args) {
-        int[][] examplefield = {{0,0,1},{1,0,0},{0,0,0}};
+        int[][] examplefield = {{0, 0, 1}, {1, 0, 0}, {0, 0, 0}};
         MsweeperState state = new MsweeperState(examplefield);
         System.out.println(state.displayToConsole());
-        state.putFlag(1,1);
+        state.putFlag(1, 1);
         System.out.println(state.displayToConsole());
-        state.reveal(2,0);
+        state.reveal(2, 0);
         System.out.println(state.displayToConsole());
         System.out.println(state);
 
