@@ -77,18 +77,89 @@ public class MsweeperState implements Cloneable {
         return false;
     }
 
-    private void putFlag(int x,int y){
+    public boolean isValidMinefield(int[][] minefield){
+        for (int[] row : minefield){
+            for (int field : row){
+                if(field != 1 && field != 0) return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    public void putFlag(int x,int y){
         if(isExistingSquare(x,y)){
-            flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
+            if(revealgrid[x][y]==0) flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
         }
         else throw new IllegalArgumentException();
+    }
+
+    public void reveal(int x, int y){
+        if(isExistingSquare(x,y)) {
+            if (revealgrid[x][y] == 0 && flaggrid[x][y] == 0) {
+                revealgrid[x][y] = 1;
+                if (aroundgrid[x][y] == 0) {
+                    reveal(x-1,y-1);
+                    reveal(x-1,y);
+                    reveal(x-1, y+1);
+                    reveal(x,y-1);
+                    reveal(x,y+1);
+                    reveal(x+1,y-1);
+                    reveal(x+1,y);
+                    reveal(x+1,y+1);
+                }
+            }
+        }
+    }
+
+    public boolean isLost(){
+        for(int i = 0; i<rownumber; ++i){
+            for(int j = 0; j<colnumber; ++j){
+                if(minegrid[i][j]==1 && revealgrid[i][j]==1) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWon(){
+        for(int i = 0; i<rownumber; ++i){
+            for(int j = 0; j<colnumber; ++j){
+                if(minegrid[i][j]==0 && revealgrid[i][j]==0) return false;
+            }
+        }
+        return true;
     }
 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i<rownumber; ++i) {
             for (int j = 0; j<colnumber; ++j) {
-                sb.append(minegrid[i][j]).append(',').append(aroundgrid[i][j]).append(',').append(flaggrid[i][j]).append(' ');
+                sb.append(minegrid[i][j]).append(',').append(aroundgrid[i][j]).append(',').append(flaggrid[i][j])
+                        .append(',').append(revealgrid[i][j]).append(' ');
+            }
+            sb.append('\n');
+        }
+        sb.append(this.isLost()).append(' ').append(this.isWon());
+        return sb.toString();
+    }
+
+    public String displayToConsole(){
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<rownumber; ++i){
+            for (int j = 0; j<colnumber; ++j){
+                if(flaggrid[i][j]==1){
+                    sb.append("' ");
+                }
+                else if(revealgrid[i][j]==0){
+                    sb.append("□ ");
+                }
+                else if(minegrid[i][j]==1){
+                    sb.append("* ");
+                }
+                else{
+                    sb.append(aroundgrid[i][j]).append(' ');
+                }
             }
             sb.append('\n');
         }
@@ -97,8 +168,12 @@ public class MsweeperState implements Cloneable {
 
     public static void main(String[] args) {
         MsweeperState state = new MsweeperState();
+        System.out.println(state.displayToConsole());
+        state.putFlag(5,10);
+        System.out.println(state.displayToConsole());
+        state.reveal(5,11);
+        System.out.println(state.displayToConsole());
         System.out.println(state);
-        state.putFlag(0,0);
-        System.out.println(state);
+
     }
 }
