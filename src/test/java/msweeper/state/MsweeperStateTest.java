@@ -58,7 +58,18 @@ public class MsweeperStateTest {
 
     @Test
     void testOneArgConstructor_ValidArg(){
-        
+        int[][] minefield = {
+                {1, 0, 0},
+                {1, 0, 1},
+                {0, 0, 0}
+        };
+        MsweeperState state = new MsweeperState(minefield);
+        assertArrayEquals(state.getMinegrid(), minefield);
+        assertArrayEquals(state.getAroundgrid(), new int[][]{
+                {1, 3, 1},
+                {1, 3, 0},
+                {1, 2, 1}
+        });
     }
 
 }
