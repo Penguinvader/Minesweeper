@@ -91,7 +91,7 @@ public class GameController {
             if (newValue) {
                 log.info("Game is over");
                 log.debug("Saving result to database...");
-                //ResultDao.persist(createGameResult());
+                resultDao.persist(createGameResult());
                 stopwatchTimeline.stop();
             }
         });
@@ -108,9 +108,9 @@ public class GameController {
     }
 
     private void displayGameState(){
-        for (int i = 0; i < 10; ++i){
-            for (int j = 0; j < 20; ++j){
-                ImageView view = (ImageView) gameGrid.getChildren().get(i * 10 + j);
+        for (int i = 0; i < 5; i++){
+            for (int j = 0; j < 10; j++){
+                ImageView view = (ImageView) gameGrid.getChildren().get(i * 10+ j);
                 if(view.getImage() != null) log.trace("Image({}, {} = {}", i, j, view.getImage().getUrl());
                 view.setImage(imageList.get(gameState.displayGrid()[i][j]));
             }

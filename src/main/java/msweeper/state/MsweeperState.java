@@ -255,9 +255,9 @@ public class MsweeperState implements Cloneable {
      * @return an array representing the content of each grid, as to be seen by the player
      */
     public int[][] displayGrid() {
-       int[][] tempgrid = new int[colnumber][rownumber];
-        for (int i = 0; i < rownumber; ++i) {
-            for (int j = 0; j < colnumber; ++j) {
+       int[][] tempgrid = new int[rownumber][colnumber];
+        for (int i = 0; i < rownumber; i++) {
+            for (int j = 0; j < colnumber; j++) {
                 if (flaggrid[i][j] == 1) {
                     tempgrid[i][j] = 1;
                 } else if (revealgrid[i][j] == 0) {
