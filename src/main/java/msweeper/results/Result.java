@@ -25,10 +25,6 @@ public class Result {
 
     private boolean solved;
 
-    private int rowNo;
-
-    private int columnNo;
-
     @Column(nullable = false)
     private Duration duration;
 

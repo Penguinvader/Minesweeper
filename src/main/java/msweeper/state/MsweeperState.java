@@ -7,20 +7,55 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
 
+/**
+ * Class representing the state of the puzzle.
+ */
 @Data
 @Slf4j
 public class MsweeperState implements Cloneable {
 
-    Random random = new Random();
+    /**
+     * Random object to generate random numbers.
+     */
+    private Random random = new Random();
 
+    /**
+     * Array representing where the mines are in the grid.
+     */
     private int[][] minegrid;
+
+    /**
+     * Array representing where the flags are in the grid.
+     */
     private int[][] flaggrid;
+
+    /**
+     * Array representing which squares are revealed in the grid.
+     */
     private int[][] revealgrid;
+
+    /**
+     * Array representing the number of mines adjacent to each grid.
+     */
     private int[][] aroundgrid;
 
+    /**
+     * The number of rows in the grid.
+     */
     private int rownumber;
+
+    /**
+     * The number of columns in the grid.
+     */
     private int colnumber;
 
+    /**
+     * Creates a {@code MsweeperState} object with mines randomly placed in it.
+     * @param rows the number of rows in the grid
+     * @param columns the number of columns in the grid
+     * @param mines the number of mines to be randomly placed in the grid
+     * @throws IllegalArgumentException if there are more mines than squares, or if the number of rows or columns are not positive
+     */
     public MsweeperState(int rows, int columns, int mines) {
         if(rows*columns>=mines && rows>0 && columns>0){
         rownumber = rows;
@@ -31,6 +66,11 @@ public class MsweeperState implements Cloneable {
         else throw new IllegalArgumentException();
     }
 
+    /**
+     * Creates a {@code MsweeperState} object from a predefined grid.
+     * @param incomingminegrid the predefined grid to create the object from
+     * @throws IllegalArgumentException if the predefined grid isn't a valid minefield
+     */
     public MsweeperState(int[][] incomingminegrid) {
         if (!isValidMinefield(incomingminegrid)) throw new IllegalArgumentException();
         rownumber = incomingminegrid.length;
@@ -60,6 +100,10 @@ public class MsweeperState implements Cloneable {
         }
     }
 
+    /**
+     * Places a number of mines in the grid, randomly.
+     * @param numberofminestoplace the number of mines to place in the grid
+     */
     private void placeMines(int numberofminestoplace) {
         for (int i = 0; i < numberofminestoplace; ++i) {
             int x = random.nextInt(rownumber);
@@ -72,6 +116,9 @@ public class MsweeperState implements Cloneable {
         }
     }
 
+    /**
+     * Calculates the number of mines around each square in the grid, and sets the values of {@code aroundgrid} to it
+     */
     private void calculateMinesAround() {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
@@ -108,13 +155,24 @@ public class MsweeperState implements Cloneable {
         return true;
     }
 
-
+    /**
+     * Places or removes a flag from the targeted square, depending on if there was one there to begin with
+     * @param x the x coordinate of the square
+     * @param y the y coordinate of the square
+     * @throws IllegalArgumentException if the targeted square does not exist
+     */
     public void putFlag(int x, int y) {
         if (isExistingSquare(x, y)) {
             if (revealgrid[x][y] == 0) flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
         } else throw new IllegalArgumentException();
     }
 
+    /**
+     * Reveals the targeted square, and recursively reveals squares around it until one is found which has a mine around it.
+     * @param x the x coordinate of the square
+     * @param y the y coordinate of the square
+     * @throws IllegalArgumentException if the targeted square does not exist
+     */
     public void reveal(int x, int y) {
         if (isExistingSquare(x, y)) {
             if (revealgrid[x][y] == 0 && flaggrid[x][y] == 0) {
@@ -133,6 +191,10 @@ public class MsweeperState implements Cloneable {
         } else throw new IllegalArgumentException();
     }
 
+    /**
+     * Checks whether the puzzle is lost.
+     * @return {@code true} if the puzzle is lost, {@code false} otherwise
+     */
     public boolean isLost() {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
@@ -142,6 +204,10 @@ public class MsweeperState implements Cloneable {
         return false;
     }
 
+    /**
+     * Checks whether the puzzle is won.
+     * @return {@code true} if the puzzle is won, {@code false} otherwise
+     */
     public boolean isWon() {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
@@ -150,6 +216,7 @@ public class MsweeperState implements Cloneable {
         }
         return true;
     }
+
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -181,6 +248,28 @@ public class MsweeperState implements Cloneable {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    /**
+     * A function which determines what the player should see on each square of the grid.
+     * @return an array representing the content of each grid, as to be seen by the player
+     */
+    public int[][] displayGrid() {
+       int[][] tempgrid = new int[colnumber][rownumber];
+        for (int i = 0; i < rownumber; ++i) {
+            for (int j = 0; j < colnumber; ++j) {
+                if (flaggrid[i][j] == 1) {
+                    tempgrid[i][j] = 1;
+                } else if (revealgrid[i][j] == 0) {
+                    tempgrid[i][j] = 0;
+                } else if (minegrid[i][j] == 1) {
+                    tempgrid[i][j] = 2;
+                } else {
+                    tempgrid[i][j] = aroundgrid[i][j] + 3;
+                }
+            }
+        }
+        return tempgrid;
     }
 
     public static void main(String[] args) {
