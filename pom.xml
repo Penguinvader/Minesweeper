@@ -26,7 +26,7 @@
     <maven.compiler.source>13</maven.compiler.source>
     <maven.compiler.target>13</maven.compiler.target>
     <exec.cleanupDaemonThreads>false</exec.cleanupDaemonThreads>
-    <exec.mainClass>minesweeper.javafx.Main</exec.mainClass>
+    <exec.mainClass>msweeper.javafx.Main</exec.mainClass>
 </properties>
 <dependencies>
     <dependency>
