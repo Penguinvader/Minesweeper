@@ -18,14 +18,17 @@ public class MsweeperState implements Cloneable {
     private int[][] revealgrid;
     private int[][] aroundgrid;
 
-    private int rownumber = 10;
-    private int colnumber = 20;
-    private int minenumber = 30;
+    private int rownumber;
+    private int colnumber;
 
-    public MsweeperState() {
+    public MsweeperState(int rows, int columns, int mines) {
+        if(rows*columns>=mines){
+        rownumber = rows;
+        colnumber = columns;
         initGrid();
-        placeMines(minenumber);
-        calculateMinesAround();
+        placeMines(mines);
+        calculateMinesAround();}
+        else throw new IllegalArgumentException();
     }
 
     public MsweeperState(int[][] incomingminegrid) {
@@ -36,9 +39,6 @@ public class MsweeperState implements Cloneable {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
                 minegrid[i][j] = incomingminegrid[i][j];
-                flaggrid[i][j] = 0;
-                revealgrid[i][j] = 0;
-                aroundgrid[i][j] = 0;
             }
         }
         calculateMinesAround();
@@ -75,20 +75,15 @@ public class MsweeperState implements Cloneable {
     private void calculateMinesAround() {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
-                if (minegrid[i][j] == 1) {
-                    if (i > 0) {
-                        if (j > 0) aroundgrid[i - 1][j - 1]++;
-                        aroundgrid[i - 1][j]++;
-                        if (j < colnumber - 1) aroundgrid[i - 1][j + 1]++;
-                    }
-                    if (i < rownumber - 1) {
-                        if (j > 0) aroundgrid[i + 1][j - 1]++;
-                        aroundgrid[i + 1][j]++;
-                        if (j < colnumber - 1) aroundgrid[i + 1][j + 1]++;
-                    }
-                    if (j > 0) aroundgrid[i][j - 1]++;
-                    if (j < colnumber - 1) aroundgrid[i][j + 1]++;
-
+                if(minegrid[i][j]==1) {
+                    if (isExistingSquare(i - 1, j - 1)) aroundgrid[i - 1][j - 1]++;
+                    if (isExistingSquare(i - 1, j)) aroundgrid[i - 1][j]++;
+                    if (isExistingSquare(i - 1, j + 1)) aroundgrid[i - 1][j + 1]++;
+                    if (isExistingSquare(i + 1, j - 1)) aroundgrid[i + 1][j - 1]++;
+                    if (isExistingSquare(i + 1, j)) aroundgrid[i + 1][j]++;
+                    if (isExistingSquare(i + 1, j + 1)) aroundgrid[i + 1][j + 1]++;
+                    if (isExistingSquare(i, j - 1)) aroundgrid[i][j - 1]++;
+                    if (isExistingSquare(i, j + 1)) aroundgrid[i][j + 1]++;
                 }
             }
         }
@@ -124,17 +119,17 @@ public class MsweeperState implements Cloneable {
             if (revealgrid[x][y] == 0 && flaggrid[x][y] == 0) {
                 revealgrid[x][y] = 1;
                 if (aroundgrid[x][y] == 0) {
-                    reveal(x - 1, y - 1);
-                    reveal(x - 1, y);
-                    reveal(x - 1, y + 1);
-                    reveal(x, y - 1);
-                    reveal(x, y + 1);
-                    reveal(x + 1, y - 1);
-                    reveal(x + 1, y);
-                    reveal(x + 1, y + 1);
+                    if (isExistingSquare(x - 1, y - 1)) reveal(x - 1, y - 1);
+                    if (isExistingSquare(x - 1, y)) reveal(x - 1, y);
+                    if (isExistingSquare(x - 1, y + 1)) reveal(x - 1, y + 1);
+                    if (isExistingSquare(x, y - 1)) reveal(x, y - 1);
+                    if (isExistingSquare(x, y + 1)) reveal(x, y + 1);
+                    if (isExistingSquare(x + 1, y - 1)) reveal(x + 1, y - 1);
+                    if (isExistingSquare(x + 1, y)) reveal(x + 1, y);
+                    if (isExistingSquare(x + 1, y + 1)) reveal(x + 1, y + 1);
                 }
             }
-        }
+        } else throw new IllegalArgumentException();
     }
 
     public boolean isLost() {
@@ -196,6 +191,13 @@ public class MsweeperState implements Cloneable {
         state.reveal(2, 0);
         System.out.println(state.displayToConsole());
         System.out.println(state);
+        MsweeperState state2 = new MsweeperState(10,20,30);
+        System.out.println(state2.displayToConsole());
+        state2.putFlag(9, 13);
+        System.out.println(state2.displayToConsole());
+        state2.reveal(7, 11);
+        System.out.println(state2.displayToConsole());
+        System.out.println(state2);
 
     }
 }
