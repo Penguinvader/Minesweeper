@@ -53,7 +53,7 @@ public class HighScoreController {
         log.debug("Loading high scores...");
         List<Result> highScoreList = gameResultDao.findBest(10);
 
-        player.setCellValueFactory(new PropertyValueFactory<>("player"));
+        player.setCellValueFactory(new PropertyValueFactory<>("playerName"));
         duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         created.setCellValueFactory(new PropertyValueFactory<>("created"));
 

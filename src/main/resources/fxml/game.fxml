@@ -35,7 +35,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleClickOnSquare" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleClickOnSquare" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleClickOnSquare" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleClickOnSquare" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" />
             <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleClickOnSquare" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="0" />

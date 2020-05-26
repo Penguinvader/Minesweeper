@@ -217,6 +217,18 @@ public class MsweeperState implements Cloneable {
         return true;
     }
 
+    /**
+     * Checks whether a reveal has been made
+     * @return {@code false} if a reveal has been made, {@code true} otherwise
+     */
+    public boolean isHidden(){
+        for (int i = 0; i < rownumber; ++i){
+            for (int j = 0; j < colnumber; j++) {
+                if (revealgrid[i][j] == 1) return false;
+            }
+        }
+        return true;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

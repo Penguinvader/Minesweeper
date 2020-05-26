@@ -105,6 +105,8 @@ public class GameController {
         displayGameState();
         createStopWatch();
         Platform.runLater(() -> messageLabel.setText("Good luck, " + playerName + "!"));
+        giveUpButton.setDisable(false);
+        resetButton.setText("Reset");
     }
 
     private void displayGameState(){
@@ -122,15 +124,34 @@ public class GameController {
         int col = GridPane.getColumnIndex((Node) mouseEvent.getSource());
         log.debug("Square ({}, {}) is pressed", row, col);
         if (! gameState.isWon()) {
+            while(gameState.isHidden() && gameState.getMinegrid()[row][col]==1) {
+                log.info("First click would be a bomb, regenerating until it isn't...");
+                gameState = new MsweeperState(5,10,15);
+            }
             if(mouseEvent.getButton() == MouseButton.PRIMARY) gameState.reveal(row,col);
             if(mouseEvent.getButton() == MouseButton.SECONDARY) gameState.putFlag(row,col);
-            if (gameState.isWon()) {
+            if (gameState.isLost()) {
+                gameOver.setValue(true);
+                log.info("Player {} has lost the game.", playerName);
+                for(int i=0; i<5; i++){
+                    for(int j=0; j<10; j++){
+                        if(gameState.getFlaggrid()[i][j] == 1) gameState.putFlag(i,j);
+                        gameState.reveal(i,j);
+                    }
+                }
+                displayGameState();
+                giveUpButton.setDisable(true);
+                resetButton.setText("Retry");
+                messageLabel.setText("Game Over. Try again?");
+            }
+            else if (gameState.isWon()) {
                 gameOver.setValue(true);
                 log.info("Player {} has solved the game", playerName);
                 messageLabel.setText("Congratulations, " + playerName + "!");
                 resetButton.setDisable(true);
                 giveUpButton.setText("Finish");
             }
+
         }
         displayGameState();
     }
