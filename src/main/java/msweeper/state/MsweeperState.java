@@ -22,7 +22,7 @@ public class MsweeperState implements Cloneable {
     private int colnumber;
 
     public MsweeperState(int rows, int columns, int mines) {
-        if(rows*columns>=mines){
+        if(rows*columns>=mines && rows>0 && columns>0){
         rownumber = rows;
         colnumber = columns;
         initGrid();
@@ -89,15 +89,16 @@ public class MsweeperState implements Cloneable {
         }
     }
 
-    public boolean isExistingSquare(int x, int y) {
+    private boolean isExistingSquare(int x, int y) {
         if (x >= 0 && y >= 0 && x < rownumber && y < colnumber) {
             return true;
         }
         return false;
     }
 
-    public boolean isValidMinefield(int[][] minefield) {
+    private boolean isValidMinefield(int[][] minefield) {
         int firstrowlength = minefield[0].length;
+        if(firstrowlength==0) return false;
         for (int[] row : minefield) {
             if (row.length != firstrowlength) return false;
             for (int field : row) {
