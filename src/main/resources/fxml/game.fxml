@@ -107,8 +107,8 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Reset" />
-            <Button fx:id="giveUpButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Give up" />
+            <Button fx:id="resetButton" onAction="#handleResetButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Reset" />
+            <Button fx:id="giveUpButton" onAction="#handleGiveUpButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Give up" />
          </children>
       </HBox>
    </bottom>
