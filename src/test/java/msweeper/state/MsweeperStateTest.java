@@ -72,4 +72,69 @@ public class MsweeperStateTest {
         });
     }
 
+    @Test
+    void testPutFlag(){
+        int[][] minefield = {
+                {1, 0, 0},
+                {1, 0, 1},
+                {0, 0, 0}
+        };
+        MsweeperState state = new MsweeperState(minefield);
+        assertThrows(IllegalArgumentException.class, () -> state.putFlag(3,2));
+        state.putFlag(2,2);
+        assertArrayEquals(state.getFlaggrid(),new int[][]{
+                {0, 0, 0},
+                {0, 0, 0},
+                {0, 0, 1}
+        });
+        state.putFlag(2,2);
+        assertArrayEquals(state.getFlaggrid(),new int[][]{
+                {0, 0, 0},
+                {0, 0, 0},
+                {0, 0, 0}
+        });
+    }
+
+    @Test
+    void testReveal(){
+        int[][] minefield = {
+                {1, 0, 0},
+                {1, 0, 1},
+                {0, 0, 0}
+        };
+        MsweeperState state = new MsweeperState(minefield);
+        assertThrows(IllegalArgumentException.class, () -> state.reveal(3,2));
+        state.reveal(1,2);
+        assertArrayEquals(state.getRevealgrid(), new int[][]{
+            {0, 1, 1},
+            {0, 1, 1},
+            {0, 1, 1}
+        });
+    }
+
+    @Test
+    void testIsLost(){
+        int[][] minefield = {
+                {1, 0, 0},
+                {1, 0, 1},
+                {0, 0, 0}
+        };
+        MsweeperState state = new MsweeperState(minefield);
+        state.reveal(1,2);
+        assertTrue(state.isLost());
+    }
+
+    @Test
+    void testIsWon(){
+        int[][] minefield = {
+                {1, 1, 1},
+                {1, 0, 1},
+                {0, 1, 1}
+        };
+        MsweeperState state = new MsweeperState(minefield);
+        state.reveal(1,1);
+        state.reveal(2,0);
+        assertTrue(state.isWon());
+    }
+
 }
