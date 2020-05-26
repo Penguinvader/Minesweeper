@@ -8,8 +8,8 @@
 <version>1.0</version>
 <description>Minesweeper Java game.</description>
 <scm>
-    <connection>https://github.com/jeszy75/rolling-cubes-game.git</connection>
-    <developerConnection>https://github.com/jeszy75/rolling-cubes-game.git</developerConnection>
+    <connection>scm:git:https://github.com/Penguinvader/Minesweeper.git</connection>
+    <developerConnection>scm:git:https://github.com/Penguinvader/Minesweeper.git</developerConnection>
 </scm>
 <developers>
     <developer>
