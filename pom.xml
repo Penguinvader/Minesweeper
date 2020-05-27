@@ -122,8 +122,8 @@
                     <configuration>
                         <rules>
                             <requireJavaVersion>
-                                <version>[11,)</version>
-                                <message>JDK 11 or later is required!</message>
+                                <version>[13,)</version>
+                                <message>JDK 13 or later is required!</message>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
