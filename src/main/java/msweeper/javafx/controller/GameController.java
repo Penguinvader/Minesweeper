@@ -121,7 +121,7 @@ public class GameController {
         int row = GridPane.getRowIndex((Node) mouseEvent.getSource());
         int col = GridPane.getColumnIndex((Node) mouseEvent.getSource());
         log.debug("Square ({}, {}) is pressed", row, col);
-        if (! gameState.isWon()) {
+        if (! gameState.isWon() && ! gameState.isLost()) {
             while(gameState.isHidden() && gameState.getMinegrid()[row][col]==1) {
                 log.info("First click would be a bomb, regenerating until it isn't...");
                 gameState = new MsweeperState(5,10,10);
