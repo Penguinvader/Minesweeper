@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -91,12 +92,12 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="89.0" prefWidth="100.0" text="Time:">
+            <Label alignment="CENTER" prefHeight="41.0" prefWidth="100.0" text="Time:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="stopwatchLabel" layoutX="10.0" layoutY="10.0" prefHeight="89.0" prefWidth="100.0" text="00:00:00">
+            <Label fx:id="stopwatchLabel" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="39.0" prefWidth="100.0" text="00:00:00">
                <font>
                   <Font size="20.0" />
                </font>
@@ -105,11 +106,14 @@
       </VBox>
    </right>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="114.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="resetButton" onAction="#handleResetButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Reset" />
-            <Button fx:id="giveUpButton" onAction="#handleGiveUpButton" mnemonicParsing="false" prefHeight="106.0" prefWidth="300.0" text="Give up" />
+            <Button fx:id="resetButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleResetButton" prefHeight="60.0" prefWidth="250.0" text="Reset" />
+            <Button fx:id="giveUpButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleGiveUpButton" prefHeight="60.0" prefWidth="250.0" text="Give up" />
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </HBox>
    </bottom>
 </BorderPane>
