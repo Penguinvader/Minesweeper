@@ -1,8 +1,6 @@
 package msweeper.state;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Random;
@@ -51,23 +49,25 @@ public class MsweeperState implements Cloneable {
 
     /**
      * Creates a {@code MsweeperState} object with mines randomly placed in it.
-     * @param rows the number of rows in the grid
+     *
+     * @param rows    the number of rows in the grid
      * @param columns the number of columns in the grid
-     * @param mines the number of mines to be randomly placed in the grid
+     * @param mines   the number of mines to be randomly placed in the grid
      * @throws IllegalArgumentException if there are more mines than squares, or if the number of rows or columns are not positive
      */
     public MsweeperState(int rows, int columns, int mines) {
-        if(rows*columns>=mines && rows>0 && columns>0){
-        rownumber = rows;
-        colnumber = columns;
-        initGrid();
-        placeMines(mines);
-        calculateMinesAround();}
-        else throw new IllegalArgumentException();
+        if (rows * columns >= mines && rows > 0 && columns > 0) {
+            rownumber = rows;
+            colnumber = columns;
+            initGrid();
+            placeMines(mines);
+            calculateMinesAround();
+        } else throw new IllegalArgumentException();
     }
 
     /**
      * Creates a {@code MsweeperState} object from a predefined grid.
+     *
      * @param incomingminegrid the predefined grid to create the object from
      * @throws IllegalArgumentException if the predefined grid isn't a valid minefield
      */
@@ -102,6 +102,7 @@ public class MsweeperState implements Cloneable {
 
     /**
      * Places a number of mines in the grid, randomly.
+     *
      * @param numberofminestoplace the number of mines to place in the grid
      */
     private void placeMines(int numberofminestoplace) {
@@ -117,12 +118,12 @@ public class MsweeperState implements Cloneable {
     }
 
     /**
-     * Calculates the number of mines around each square in the grid, and sets the values of {@code aroundgrid} to it
+     * Calculates the number of mines around each square in the grid, and sets the values of {@code aroundgrid} to it.
      */
     private void calculateMinesAround() {
         for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; ++j) {
-                if(minegrid[i][j]==1) {
+                if (minegrid[i][j] == 1) {
                     if (isExistingSquare(i - 1, j - 1)) aroundgrid[i - 1][j - 1]++;
                     if (isExistingSquare(i - 1, j)) aroundgrid[i - 1][j]++;
                     if (isExistingSquare(i - 1, j + 1)) aroundgrid[i - 1][j + 1]++;
@@ -145,7 +146,7 @@ public class MsweeperState implements Cloneable {
 
     private boolean isValidMinefield(int[][] minefield) {
         int firstrowlength = minefield[0].length;
-        if(firstrowlength==0) return false;
+        if (firstrowlength == 0) return false;
         for (int[] row : minefield) {
             if (row.length != firstrowlength) return false;
             for (int field : row) {
@@ -156,7 +157,8 @@ public class MsweeperState implements Cloneable {
     }
 
     /**
-     * Places or removes a flag from the targeted square, depending on if there was one there to begin with
+     * Places or removes a flag from the targeted square, depending on if there was one there to begin with.
+     *
      * @param x the x coordinate of the square
      * @param y the y coordinate of the square
      * @throws IllegalArgumentException if the targeted square does not exist
@@ -169,6 +171,7 @@ public class MsweeperState implements Cloneable {
 
     /**
      * Reveals the targeted square, and recursively reveals squares around it until one is found which has a mine around it.
+     *
      * @param x the x coordinate of the square
      * @param y the y coordinate of the square
      * @throws IllegalArgumentException if the targeted square does not exist
@@ -193,6 +196,7 @@ public class MsweeperState implements Cloneable {
 
     /**
      * Checks whether the puzzle is lost.
+     *
      * @return {@code true} if the puzzle is lost, {@code false} otherwise
      */
     public boolean isLost() {
@@ -206,6 +210,7 @@ public class MsweeperState implements Cloneable {
 
     /**
      * Checks whether the puzzle is won.
+     *
      * @return {@code true} if the puzzle is won, {@code false} otherwise
      */
     public boolean isWon() {
@@ -218,11 +223,12 @@ public class MsweeperState implements Cloneable {
     }
 
     /**
-     * Checks whether a reveal has been made
+     * Checks whether a reveal has been made.
+     *
      * @return {@code false} if a reveal has been made, {@code true} otherwise
      */
-    public boolean isHidden(){
-        for (int i = 0; i < rownumber; ++i){
+    public boolean isHidden() {
+        for (int i = 0; i < rownumber; ++i) {
             for (int j = 0; j < colnumber; j++) {
                 if (revealgrid[i][j] == 1) return false;
             }
@@ -230,6 +236,11 @@ public class MsweeperState implements Cloneable {
         return true;
     }
 
+    /**
+     * Converts the current state to a string.
+     *
+     * @return the result of the conversion
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < rownumber; ++i) {
@@ -243,31 +254,14 @@ public class MsweeperState implements Cloneable {
         return sb.toString();
     }
 
-    public String displayToConsole() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < rownumber; ++i) {
-            for (int j = 0; j < colnumber; ++j) {
-                if (flaggrid[i][j] == 1) {
-                    sb.append("' ");
-                } else if (revealgrid[i][j] == 0) {
-                    sb.append("□ ");
-                } else if (minegrid[i][j] == 1) {
-                    sb.append("* ");
-                } else {
-                    sb.append(aroundgrid[i][j]).append(' ');
-                }
-            }
-            sb.append('\n');
-        }
-        return sb.toString();
-    }
 
     /**
      * A function which determines what the player should see on each square of the grid.
+     *
      * @return an array representing the content of each grid, as to be seen by the player
      */
     public int[][] displayGrid() {
-       int[][] tempgrid = new int[rownumber][colnumber];
+        int[][] tempgrid = new int[rownumber][colnumber];
         for (int i = 0; i < rownumber; i++) {
             for (int j = 0; j < colnumber; j++) {
                 if (flaggrid[i][j] == 1) {
@@ -287,19 +281,11 @@ public class MsweeperState implements Cloneable {
     public static void main(String[] args) {
         int[][] examplefield = {{0, 0, 1}, {1, 0, 0}, {0, 0, 0}};
         MsweeperState state = new MsweeperState(examplefield);
-        System.out.println(state.displayToConsole());
-        state.putFlag(1, 1);
-        System.out.println(state.displayToConsole());
-        state.reveal(2, 0);
-        System.out.println(state.displayToConsole());
         System.out.println(state);
-        MsweeperState state2 = new MsweeperState(10,20,30);
-        System.out.println(state2.displayToConsole());
-        state2.putFlag(9, 13);
-        System.out.println(state2.displayToConsole());
-        state2.reveal(7, 11);
-        System.out.println(state2.displayToConsole());
-        System.out.println(state2);
+        state.putFlag(1, 1);
+        System.out.println(state);
+        state.reveal(2, 0);
+        System.out.println(state);
 
     }
 }
