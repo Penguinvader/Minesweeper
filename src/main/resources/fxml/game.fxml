@@ -91,12 +91,12 @@
    <right>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="stopwatchLabel" prefHeight="89.0" prefWidth="100.0" text="Time:">
+            <Label prefHeight="89.0" prefWidth="100.0" text="Time:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="stopwatchTimeline" layoutX="10.0" layoutY="10.0" prefHeight="89.0" prefWidth="100.0" text="00:00:00">
+            <Label fx:id="stopwatchLabel" layoutX="10.0" layoutY="10.0" prefHeight="89.0" prefWidth="100.0" text="00:00:00">
                <font>
                   <Font size="20.0" />
                </font>

@@ -99,7 +99,7 @@ public class GameController {
     }
 
     private void resetGame(){
-        gameState = new MsweeperState(5,10,15);
+        gameState = new MsweeperState(5,10,10);
         startTime = Instant.now();
         gameOver.setValue(false);
         displayGameState();
@@ -126,7 +126,7 @@ public class GameController {
         if (! gameState.isWon()) {
             while(gameState.isHidden() && gameState.getMinegrid()[row][col]==1) {
                 log.info("First click would be a bomb, regenerating until it isn't...");
-                gameState = new MsweeperState(5,10,15);
+                gameState = new MsweeperState(5,10,10);
             }
             if(mouseEvent.getButton() == MouseButton.PRIMARY) gameState.reveal(row,col);
             if(mouseEvent.getButton() == MouseButton.SECONDARY) gameState.putFlag(row,col);
