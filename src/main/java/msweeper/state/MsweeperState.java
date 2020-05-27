@@ -165,7 +165,10 @@ public class MsweeperState implements Cloneable {
      */
     public void putFlag(int x, int y) {
         if (isExistingSquare(x, y)) {
-            if (revealgrid[x][y] == 0) flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
+            if (revealgrid[x][y] == 0) {
+                flaggrid[x][y] = (flaggrid[x][y] + 1) % 2;
+                log.info("Flag placed/removed at square ({}, {})", x, y);;
+            }
         } else throw new IllegalArgumentException();
     }
 
@@ -179,6 +182,7 @@ public class MsweeperState implements Cloneable {
     public void reveal(int x, int y) {
         if (isExistingSquare(x, y)) {
             if (revealgrid[x][y] == 0 && flaggrid[x][y] == 0) {
+                log.info("Square at ({}, {}) is revealed", x, y);
                 revealgrid[x][y] = 1;
                 if (aroundgrid[x][y] == 0) {
                     if (isExistingSquare(x - 1, y - 1)) reveal(x - 1, y - 1);
